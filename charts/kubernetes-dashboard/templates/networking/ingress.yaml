@@ -73,7 +73,11 @@ spec:
               service:
                 name: {{ template "kong.fullname" (index $.Subcharts "kong") }}-proxy
                 port:
+                  {{ if $.Values.kong.proxy.http.enabled }}
+                  number: {{ $.Values.kong.proxy.http.servicePort }}
+                  {{ else }}
                   number: {{ $.Values.kong.proxy.tls.servicePort }}
+                  {{ end }}
     {{- end }}
     {{- else }}
     - http:
@@ -84,6 +88,10 @@ spec:
               service:
                 name: {{ template "kong.fullname" (index $.Subcharts "kong") }}-proxy
                 port:
+                  {{ if $.Values.kong.proxy.http.enabled }}
+                  number: {{ $.Values.kong.proxy.http.servicePort }}
+                  {{ else }}
                   number: {{ $.Values.kong.proxy.tls.servicePort }}
+                  {{ end }}
     {{- end }}
 {{- end }}
